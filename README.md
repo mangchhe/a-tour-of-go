@@ -5,6 +5,7 @@
 ## 학습 목록
 
 - [시작하기][basics]
-
+- [흐름제어][flowcontrol]
 
 [basics]: ./basics
+[flowcontrol]: ./flowcontrol
