@@ -253,3 +253,72 @@ func describe2(i I3) {
 	fmt.Printf("(%v, %T)\n", i, i)
 }
 ```
+
+## 빈 인터페이스 값
+
+- 빈 인터페이스는 모든 유형의 값을 가질 수 있다. (최소 0개의 메서드를 구현)
+- 빈 인터페이스는 알 수 없는 값을 처리하는 이용된다.
+
+```go
+func main() {
+	var i interface{}
+	describe3(i)
+
+	i = 42
+	describe3(i)
+
+	i = "hello"
+	describe3(i)
+}
+
+func describe3(i interface{}) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+```
+
+## 타입 선언
+
+- `t := i.(T)` type assertion은 인터페이스 값의 기초적인 콘크리트 값에 대한 접근을 제공한다.
+- 만약 i가 T를 갖지 못하면 그 선언은 panic 상태가 된다.
+- 인터페이스 값이 특정 유형을 보유하는지 여부를 테스트하기 위해 타입 선언에서 기본값과 선언 성공 여부를 보고하는 불린 값을 반환할 수 있다.
+
+```go
+func main() {
+	var i interface{} = "hello"
+
+	s := i.(string)
+	fmt.Println(s)
+
+	s, ok := i.(string)
+	fmt.Println(s, ok)
+
+	f, ok := i.(float64)
+	fmt.Println(f, ok)
+
+	f = i.(float64) // panic
+	fmt.Println(f)
+}
+```
+
+## 타입 스위치
+
+- 타입 스위치는 값이 아닌 타입을 명시하여 비교한다.
+
+```go
+func do(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Printf("Twice %v is %v\n", v, v*2)
+	case string:
+		fmt.Printf("%q is %v bytes long\n", v, len(v))
+	default:
+		fmt.Printf("I don't know about type %T!\n", v)
+	}
+}
+
+func main() {
+	do(21)
+	do("hello")
+	do(true)
+}
+```
